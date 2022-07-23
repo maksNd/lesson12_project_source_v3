@@ -1,36 +1,29 @@
-from flask import Flask, request, render_template, send_from_directory
-# from functions import ...
+from flask import Flask, send_from_directory
 
-POST_PATH = "posts.json"
-UPLOAD_FOLDER = "uploads/images"
+from bp_main.main_blueprint import index_blueprint
+from bp_loader.bp_loader import loader_blueprint
+from bp_search.bp_search import search_blueprint
 
 app = Flask(__name__)
 
-
-@app.route("/")
-def page_index():
-    pass
-
-
-@app.route("/list")
-def page_tag():
-    pass
+app.register_blueprint(index_blueprint)
+app.register_blueprint(search_blueprint, url_prefix='/search')
+app.register_blueprint(loader_blueprint, url_prefix='/post')
 
 
-@app.route("/post", methods=["GET", "POST"])
-def page_post_form():
-    pass
-
-
-@app.route("/post", methods=["POST"])
-def page_post_upload():
-    pass
-
-
-@app.route("/uploads/<path:path>")
-def static_dir(path):
+@app.route("/search/uploads/<path:path>")
+def static_dir_for_bp_search(path):
     return send_from_directory("uploads", path)
 
 
-app.run()
+@app.route("/post/uploads/<path:path>")
+def static_dir_for_bp_loader(path):
+    return send_from_directory("uploads", path)
 
+
+@app.route("/styles/<path:path>")
+def styles_dir(path):
+    return send_from_directory("styles", path)
+
+
+app.run(debug=True)
