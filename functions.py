@@ -24,3 +24,10 @@ def add_post_to_json_file(picture_path: str, content: str, json_file: str) -> No
         data.append({"pic": picture_path, "content": content})
     with open(json_file, 'w', encoding='utf-8') as file:
         json.dump(data, file, ensure_ascii=False)
+
+
+def check_extension_file(filename: str, allowed_extensions: set) -> bool:
+    """Checks extension file"""
+    if filename.split('.')[-1] in allowed_extensions:
+        return True
+    return False

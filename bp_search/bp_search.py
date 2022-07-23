@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request
 from functions import load_data_from_json, find_post_by_word
-
-POST_PATH = "posts.json"
+from constants import POST_PATH
 
 search_blueprint = Blueprint("search_blueprint", __name__, template_folder='templates')
 
