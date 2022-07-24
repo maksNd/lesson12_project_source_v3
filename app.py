@@ -21,12 +21,6 @@ def static_dir_for_bp_search(path):
     return send_from_directory("uploads", path)
 
 
-@app.errorhandler(413)
-def page_not_found(error):
-    logger.error('Попытка загрузить слишком большое изображение')
-    return "<h1>Файл большеват</h1><p>Поищите поменьше, плиз!</p>", 413
-
-
 @app.route("/uploads/<path:path>")
 def static_dir_for_bp_loader(path):
     return send_from_directory("uploads", path)

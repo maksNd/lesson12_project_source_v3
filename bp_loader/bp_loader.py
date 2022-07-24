@@ -9,6 +9,13 @@ logger = logging.getLogger('basic')
 loader_blueprint = Blueprint('loader_blueprint', __name__, template_folder='templates')
 
 
+@loader_blueprint.errorhandler(413)
+def page_not_found(error):
+    logger.error('Попытка загрузить слишком большое изображение')
+    message = "Вы пытаетесь загрузить слишком большое изображение"
+    return render_template('post_not_uploaded.html', message=message)
+
+
 @loader_blueprint.route('/post')
 def page_post_form():
     return render_template('post_form.html')
@@ -23,7 +30,8 @@ def page_post_upload():
 
     if not check_extension_file(picture.filename, ALLOWED_EXTENSIONS):
         logger.info(f'Попытка загрузки не изображеня. Имя файла - {picture.filename}')
-        return 'Загруженный файл - не картинка'
+        message = 'Загружаемый файл не является изображением'
+        return render_template('post_not_uploaded.html', message=message)
 
     content = request.values.get("content")
     picture_path = f'{UPLOAD_FOLDER}/{picture.filename}'
