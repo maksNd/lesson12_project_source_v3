@@ -9,16 +9,20 @@ logger = logging.getLogger('basic')
 loader_blueprint = Blueprint('loader_blueprint', __name__, template_folder='templates')
 
 
-@loader_blueprint.route('/')
+@loader_blueprint.route('/post')
 def page_post_form():
     return render_template('post_form.html')
 
 
-@loader_blueprint.route('/', methods=['POST'])
+@loader_blueprint.route('/post', methods=['POST'])
 def page_post_upload():
     picture = request.files.get("picture")
+
+    if picture.filename == '':  # если ничего не выбрано - снова вернем форму ввода
+        return render_template('post_form.html')
+
     if not check_extension_file(picture.filename, ALLOWED_EXTENSIONS):
-        logger.info('Попытка загрузки не изображеня')
+        logger.info(f'Попытка загрузки не изображеня. Имя файла - {picture.filename}')
         return 'Загруженный файл - не картинка'
 
     content = request.values.get("content")
