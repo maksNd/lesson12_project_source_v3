@@ -10,6 +10,7 @@ def load_data_from_json(path: str) -> list[dict]:
 
 def find_post_by_word(word: str, posts: list[dict]) -> list[dict]:
     """Finds posts by words"""
+
     wanted_posts = []
     for post in posts:
         if word.lower() in post.get("content").lower():
@@ -19,6 +20,7 @@ def find_post_by_word(word: str, posts: list[dict]) -> list[dict]:
 
 def add_post_to_json_file(picture_path: str, content: str, json_file: str) -> None:
     """Adds new post (picture and text) to json file"""
+
     with open(json_file, encoding='utf-8') as file:
         data = json.load(file)
         data.append({"pic": picture_path, "content": content})
@@ -28,6 +30,5 @@ def add_post_to_json_file(picture_path: str, content: str, json_file: str) -> No
 
 def check_extension_file(filename: str, allowed_extensions: set) -> bool:
     """Checks extension file"""
-    if filename.split('.')[-1] in allowed_extensions:
-        return True
-    return False
+
+    return filename.split('.')[-1] in allowed_extensions
